@@ -57,6 +57,8 @@ function retrievePageOfCharacters(pageNumber) {
 }
 
 function drawCharacterToDetail(characterObject) {
+    console.log(characterObject);
+    console.log('that was what got passed in');
     const detailArea = document.querySelector('[data-detail]');
     detailArea.textContent = '';
 
@@ -73,6 +75,17 @@ function drawCharacterToDetail(characterObject) {
     detailArea.appendChild(diedDiv);    
 }
 
+function findCharacterInArray(url) {
+    return allCharactersArray.find(function (character) {
+        return character.url === url;
+        // if (character.url === url) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+    });
+}
+
 function drawSingleCharacterToListing(characterObject) {
     
     const characterName = characterObject.name;
@@ -82,6 +95,15 @@ function drawSingleCharacterToListing(characterObject) {
 
     const anchorElement = document.createElement('a');
     anchorElement.textContent = characterName;
+
+    // When you need to pass an argument to the event handler function
+    // you must wrap it in an anonymous function.
+    anchorElement.addEventListener('click', function () {
+        drawCharacterToDetail(characterObject);
+        // const theUrl = characterObject.url;
+        // const theCharacter = findCharacterInArray(theUrl);
+        // drawCharacterToDetail(theCharacter);
+    });
 
     const listItem = document.createElement('li');
     listItem.appendChild(anchorElement);
