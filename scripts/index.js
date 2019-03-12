@@ -17,6 +17,19 @@ function accumulateCharacters(theActualData) { // #3 Receive the actual data and
         ...theActualData
     ];
     storeCharacters(allCharactersArray);
+
+    // We know that there are no more characters
+    // to load if the API is sending us empty arrays.
+    if (theActualData.length === 0) {
+        // This is a terrible, but useful hack
+        // reload the page
+        // location.reload();
+
+        // Really, though...when we have
+        // loaded all the data from the API,
+        // just call the main function again!
+        main();
+    }
 }
 
 const storageKey = 'game-of-thrones';
@@ -53,7 +66,8 @@ function retrievePageOfCharacters(pageNumber) {
       .then(accumulateCharacters)
       .then(function () {
           console.log(`Done with page ${pageNumber}`);
-      })    
+
+      })   
 }
 
 function drawCharacterToDetail(characterObject) {
