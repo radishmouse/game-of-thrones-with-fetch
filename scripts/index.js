@@ -20,6 +20,7 @@ function accumulateCharacters(theActualData) { // #3 Receive the actual data and
 }
 
 const storageKey = 'game-of-thrones';
+
 function storeCharacters(arrayOfCharacters) {
     // convert the array to a JSON string
     const jsonCharacters = JSON.stringify(arrayOfCharacters);
@@ -51,17 +52,30 @@ function retrievePageOfCharacters(pageNumber) {
       })    
 }
 
-for (let pageNumber=0; pageNumber<50; pageNumber++) {
-    let delay = pageNumber * 500;
 
-    // We have to wrap retrievePageOfCharacters
-    // in an anonymous function
-    // so we can pass it an argument.
-    setTimeout(function () {
-        retrievePageOfCharacters(pageNumber);
-    }, delay);
+function main() {    
+    let charactersInLocalStorage = loadCharacters();
+    if (charactersInLocalStorage) {
+        allCharactersArray = [
+            ...charactersInLocalStorage
+        ];
+    } else {
+        console.log("You got a whole lotta nuthin'.");
+        console.log("Retrieving from the API");
+        for (let pageNumber=0; pageNumber<50; pageNumber++) {
+            let delay = pageNumber * 500;
+        
+            // We have to wrap retrievePageOfCharacters
+            // in an anonymous function
+            // so we can pass it an argument.
+            setTimeout(function () {
+                retrievePageOfCharacters(pageNumber);
+            }, delay);
+        
+            // If it did not take any arguments
+            // we would not need to wrap it.
+        }
+    }
+}    
 
-    // If it did not take any arguments
-    // we would not need to wrap it.
-}
-
+main();
