@@ -56,6 +56,23 @@ function retrievePageOfCharacters(pageNumber) {
       })    
 }
 
+function drawCharacterToDetail(characterObject) {
+    const detailArea = document.querySelector('[data-detail]');
+    detailArea.textContent = '';
+
+    const nameDiv = document.createElement('div');
+    const bornDiv = document.createElement('div');
+    const diedDiv = document.createElement('div');
+
+    nameDiv.textContent = `Name: ${characterObject.name}`;
+    bornDiv.textContent = `Born: ${characterObject.born}`;
+    diedDiv.textContent = `Died: ${characterObject.died}`;
+    
+    detailArea.appendChild(nameDiv);    
+    detailArea.appendChild(bornDiv);    
+    detailArea.appendChild(diedDiv);    
+}
+
 function drawSingleCharacterToListing(characterObject) {
     
     const characterName = characterObject.name;
