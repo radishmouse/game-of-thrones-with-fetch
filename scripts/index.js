@@ -35,7 +35,11 @@ function loadCharacters() {
 
     // convert it back into an array
     const arrayOfCharacters = JSON.parse(jsonCharacters);
-    console.log(`loaded ${arrayOfCharacters.length} characters`);
+    if (arrayOfCharacters) {
+        console.log(`loaded ${arrayOfCharacters.length} characters`);
+    } else {
+        console.log('No characters in localStorage');
+    }
 
     // return it
     return arrayOfCharacters;
