@@ -44,11 +44,13 @@ body > * {
 }
 
 .listing {
-    width: 18%;
+    width: 33%;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .detail {
-    width: 80%;
+    width: 65%;
     /* 1em is 100% of the current element's font size */
     padding: 1em;
 
