@@ -1,0 +1,60 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    font-size: 24px;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+body > * {
+    border: 1px solid red;
+}
+
+.index-container {
+}
+
+.main-content {
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.listing,
+.detail  {
+    background-color: black;
+    color: white;
+
+    /* 
+    Take up the maximum space available. 
+    This is 100% of the container they're in.
+    */
+    height: 100%;
+}
+
+.listing {
+    width: 18%;
+}
+
+.detail {
+    width: 80%;
+    /* 1em is 100% of the current element's font size */
+    padding: 1em;
+
+    /* 
+      1vh is 1/100th of the height of the viewport
+      also, there's 1vw;
+    */
+    /* padding: 1vh; */
+}
