@@ -127,13 +127,15 @@ function drawSingleCharacterToListing(characterObject) {
     listArea.appendChild(listItem);
 }
 
-function drawListOfCharacters() {
+function drawListOfCharacters(characters=allCharactersArray) {
     // uses global variable allCharactersArray
     
+    const listArea = document.querySelector('[data-listing]');
+    listArea.textContent = '';
     // loop through the array of characters
     // for each one, draw the name in the listing
     // area of the page.
-    allCharactersArray.forEach(drawSingleCharacterToListing);
+    characters.forEach(drawSingleCharacterToListing);
 }
 
 function sortByName(obj1, obj2) {
@@ -149,6 +151,28 @@ function sortByName(obj1, obj2) {
     return 0;
 }
 
+function filterByLetter(letter) {
+    console.log(letter);
+    if (letter.length === 1) {
+        const filtered = allCharactersArray.filter(function (character) {
+            return character.name.startsWith(letter.toUpperCase());
+        });
+        console.log(`drawing for ${letter}`);
+        drawListOfCharacters(filtered);
+    } else {
+        console.log('drawing all');
+        drawListOfCharacters();
+    }
+}
+
+function attachClickToLetters() {
+    const letters = document.querySelectorAll('[data-index] a');
+    letters.forEach(function (letter) {
+        letter.addEventListener('click', function () {
+            filterByLetter(letter.textContent);
+        });
+    });
+}
 
 function main() {    
     let charactersInLocalStorage = loadCharacters();
@@ -157,6 +181,7 @@ function main() {
             ...charactersInLocalStorage.sort(sortByName)
         ];
         drawListOfCharacters();
+        attachClickToLetters();
     } else {
         console.log("You got a whole lotta nuthin'.");
         console.log("Retrieving from the API");
