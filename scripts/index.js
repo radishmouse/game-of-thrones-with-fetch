@@ -174,6 +174,21 @@ function attachClickToLetters() {
     });
 }
 
+function convertToJSON(response) {
+    // Start the conversion process.
+    return response.json();  // <-------------- We're returning another Promise.
+}
+
+function logWeatherForDebugging (theWeather) {
+    console.log('This is the weather. Yer welcome');
+    console.log(theWeather);
+    return theWeather;
+}
+
+function drawWeather(theWeather) {
+    // create and append some DOM elements
+}
+
 function main() {    
 
     // We need to fetch our GPS coordinates
@@ -200,14 +215,9 @@ function main() {
             const WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
 
             fetch(WEATHER_URL)
-                .then(function (response) {
-                    // Start the conversion process.
-                    return response.json();  // <-------------- We're returning another Promise.
-                })
-                .then(function (theWeather) {
-                    console.log('This is the weather. Yer welcome');
-                    console.log(theWeather);
-                })                
+                .then(convertToJSON)
+                .then(logWeatherForDebugging)
+                .then(drawWeather)
 
         })
 
