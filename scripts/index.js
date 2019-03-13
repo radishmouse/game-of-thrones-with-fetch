@@ -195,31 +195,82 @@ function main() {
     // And then we need to send that
     // to another API (via fetch)
 
-    const GEO_URL = "https://api.opencagedata.com/geocode/v1/json?q=Atlanta,Georgia,US&key=2218757b92f34ccdb80a7e2c6bac321b";
+    const GEO_URL1 = "https://api.opencagedata.com/geocode/v1/json?q=Atlanta,Georgia,US&key=2218757b92f34ccdb80a7e2c6bac321b";
+    const GEO_URL2 = "https://api.opencagedata.com/geocode/v1/json?q=Athens,Georgia,US&key=2218757b92f34ccdb80a7e2c6bac321b";
+    const GEO_URL3 = "https://api.opencagedata.com/geocode/v1/json?q=Nashville,Tennessee,US&key=2218757b92f34ccdb80a7e2c6bac321b";
 
-    fetch(GEO_URL)
+    const atlGeoPromise = fetch(GEO_URL1)
         .then(function (response) {
-            // Start the conversion process.
-            return response.json();  // <-------------- We're returning another Promise.
+            return response.json();
         })
-        .then(function (geoData) {
-            console.log('Inside the function (geoData)');
-            console.log(geoData.results[0].geometry.lat);
-            console.log(geoData.results[0].geometry.lng);
-            return geoData.results[0].geometry;
-        })
-        .then(function (coordinates) {
-            console.log('Inside the function (coordinates)');
-            // Call the other API with yet another fetch
-            console.log(coordinates);
-            const WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
 
-            fetch(WEATHER_URL)
-                .then(convertToJSON)
-                .then(logWeatherForDebugging)
-                .then(drawWeather)
+    const athGeoPromise = fetch(GEO_URL2)
+        .then(function (response) {
+            return response.json();
+        })
+
+    const nshGeoPromise = fetch(GEO_URL3)
+        .then(function (response) {
+            return response.json();
+        })
+
+
+    Promise.all([atlGeoPromise, athGeoPromise, nshGeoPromise])
+        .then(function (arrayOfGeoData) {
+            console.log(arrayOfGeoData);
+
+            const coordinates1 = arrayOfGeoData[0].results[0].geometry;
+            const coordinates2 = arrayOfGeoData[1].results[0].geometry;
+            const coordinates3 = arrayOfGeoData[2].results[0].geometry;
+
+            const WEATHER_URL1 = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates1.lat}&lon=${coordinates1.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
+            const WEATHER_URL2 = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates2.lat}&lon=${coordinates2.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
+            const WEATHER_URL3 = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates3.lat}&lon=${coordinates3.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
+
+            const atlWeatherPromise = fetch(WEATHER_URL1)
+                .then(function (response) {
+                    return response.json();
+                })
+            const athWeatherPromise = fetch(WEATHER_URL2)
+                .then(function (response) {
+                    return response.json();
+                })
+            const nshWeatherPromise = fetch(WEATHER_URL3)
+                .then(function (response) {
+                    return response.json();
+                })
+    
+            Promise.all([atlWeatherPromise, athWeatherPromise, nshWeatherPromise])
+                .then(function (arrayOfWeather) {
+                    console.log('Yasssssss it\'s the weatherrrrrr');
+                    console.log(arrayOfWeather);
+                })
 
         })
+
+
+        // .then(function (geoData) {
+        //     console.log('Inside the function (geoData)');
+        //     console.log(geoData.results[0].geometry.lat);
+        //     console.log(geoData.results[0].geometry.lng);
+        //     return geoData.results[0].geometry;
+        // })
+
+
+
+
+        // .then(function (coordinates) {
+        //     console.log('Inside the function (coordinates)');
+        //     // Call the other API with yet another fetch
+        //     console.log(coordinates);
+        //     const WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
+
+        //     fetch(WEATHER_URL)
+        //         .then(convertToJSON)
+        //         .then(logWeatherForDebugging)
+        //         .then(drawWeather)
+
+        // })
 
 
 
