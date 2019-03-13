@@ -176,22 +176,42 @@ function attachClickToLetters() {
 
 function main() {    
 
-    // This no worky. It too fast. Ow.
-    // for (let i=0; i<10000; i++) {
-    
-    // Also no worky. Only runs once :(
-    // setTimeout(function () {
+    // We need to fetch our GPS coordinates
+    // And then we need to send that
+    // to another API (via fetch)
 
-    // Yay! It will run the anonymous function
-    // every 5000ms
-    // This technique is known as "polling"
-    setInterval(function () {
-        retrievePageOfCharacters(0);
-        drawListOfCharacters();
-        attachClickToLetters();
-    }, 5000);
-    // }, 5000);
-    // }
+    const GEO_URL = "https://api.opencagedata.com/geocode/v1/json?q=Atlanta,Georgia,US&key=2218757b92f34ccdb80a7e2c6bac321b";
+
+    fetch(GEO_URL)
+        .then(function (response) {
+            // Start the conversion process.
+            return response.json();  // <-------------- We're returning another Promise.
+        })
+        .then(function (geoData) {
+            console.log('Inside the function (geoData)');
+            console.log(geoData.results[0].geometry.lat);
+            console.log(geoData.results[0].geometry.lng);
+            return geoData.results[0].geometry;
+        })
+        .then(function (coordinates) {
+            console.log('Inside the function (coordinates)');
+            // Call the other API with yet another fetch
+            console.log(coordinates);
+            const WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
+
+            fetch(WEATHER_URL)
+                .then(function (response) {
+                    // Start the conversion process.
+                    return response.json();  // <-------------- We're returning another Promise.
+                })
+                .then(function (theWeather) {
+                    console.log('This is the weather. Yer welcome');
+                    console.log(theWeather);
+                })                
+
+        })
+
+
 
 }    
 
