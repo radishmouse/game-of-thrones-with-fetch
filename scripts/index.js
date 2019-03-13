@@ -196,10 +196,12 @@ function main() {
     // to another API (via fetch)
 
     const GEO_URL = "https://api.opencagedata.com/geocode/v1/json?q=Atlanta,Georgia,US&key=2218757b92f34ccdb80a7e2c6bac321b";
+    // const GEO_URL = "https://api.opencagzedata.com/geocode/v1/json?q=Atlanta,Georgia,US&key=2218757b92f34ccdb80a7e2c6bac321b";
 
     fetch(GEO_URL)
         .then(function (response) {
             // Start the conversion process.
+            console.log(response);
             return response.json();  // <-------------- We're returning another Promise.
         })
         .then(function (geoData) {
@@ -208,18 +210,17 @@ function main() {
             console.log(geoData.results[0].geometry.lng);
             return geoData.results[0].geometry;
         })
-        .then(function (coordinates) {
-            console.log('Inside the function (coordinates)');
-            // Call the other API with yet another fetch
-            console.log(coordinates);
-            const WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lng}&units=imperial&appid=2f4580c1da2a1471787ee4c356181fd1`;
-
-            fetch(WEATHER_URL)
-                .then(convertToJSON)
-                .then(logWeatherForDebugging)
-                .then(drawWeather)
-
+        .catch(function (error) {
+            console.log(error);
+            console.log('ouchie. that no worky');
+            // reportErrorToUser(error);
+            return {"documentation":"https://opencagedata.com/api","licenses":[{"name":"CC-BY-SA","url":"https://creativecommons.org/licenses/by-sa/3.0/"},{"name":"ODbL","url":"https://opendatacommons.org/licenses/odbl/summary/"}],"rate":{"limit":2500,"remaining":2498,"reset":1552521600},"results":[{"annotations":{"DMS":{"lat":"33\u00b0 44' 56.75532'' N","lng":"84\u00b0 23' 24.66564'' W"},"FIPS":{"county":"13121","state":"13"},"MGRS":"16SGC4174937397","Maidenhead":"EM73tr39es","Mercator":{"x":-9394272.411,"y":3971424.307},"OSM":{"edit_url":"https://www.openstreetmap.org/edit?relation=119557#map=17/33.74910/-84.39018","url":"https://www.openstreetmap.org/?mlat=33.74910&mlon=-84.39018#map=17/33.74910/-84.39018"},"callingcode":1,"currency":{"alternate_symbols":["US$"],"decimal_mark":".","disambiguate_symbol":"US$","html_entity":"$","iso_code":"USD","iso_numeric":840,"name":"United States Dollar","smallest_denomination":1,"subunit":"Cent","subunit_to_unit":100,"symbol":"$","symbol_first":1,"thousands_separator":","},"flag":"\ud83c\uddfa\ud83c\uddf8","geohash":"djgzzxufwpvrd1jsbyny","qibla":52.32,"sun":{"rise":{"apparent":1552477740,"astronomical":1552472760,"civil":1552476240,"nautical":1552474500},"set":{"apparent":1552520580,"astronomical":1552439160,"civil":1552435680,"nautical":1552437420}},"timezone":{"name":"America/New_York","now_in_dst":1,"offset_sec":-14400,"offset_string":-400,"short_name":"EDT"},"what3words":{"words":"weekends.speeches.ladder"},"wikidata":"Q23556"},"bounds":{"northeast":{"lat":33.886823,"lng":-84.28956},"southwest":{"lat":33.647808,"lng":-84.551068}},"components":{"ISO_3166-1_alpha-2":"US","ISO_3166-1_alpha-3":"USA","_type":"city","city":"Atlanta","continent":"North America","country":"USA","country_code":"us","county":"Fulton County","state":"Georgia","state_code":"GA"},"confidence":4,"formatted":"Atlanta, GA, United States of America","geometry":{"lat":33.7490987,"lng":-84.3901849}}],"status":{"code":200,"message":"OK"},"stay_informed":{"blog":"https://blog.opencagedata.com","twitter":"https://twitter.com/opencagedata"},"thanks":"For using an OpenCage Data API","timestamp":{"created_http":"Wed, 13 Mar 2019 14:44:50 GMT","created_unix":1552488290},"total_results":1};
         })
+        // .catch(function (error) {
+            // The further down the chain your .catch is,
+            // the more stuff it has to be responsible for.
+        // })
+
 
 
 
