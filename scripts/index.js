@@ -175,30 +175,24 @@ function attachClickToLetters() {
 }
 
 function main() {    
-    let charactersInLocalStorage = loadCharacters();
-    if (charactersInLocalStorage) {
-        allCharactersArray = [
-            ...charactersInLocalStorage.sort(sortByName)
-        ];
+
+    // This no worky. It too fast. Ow.
+    // for (let i=0; i<10000; i++) {
+    
+    // Also no worky. Only runs once :(
+    // setTimeout(function () {
+
+    // Yay! It will run the anonymous function
+    // every 5000ms
+    // This technique is known as "polling"
+    setInterval(function () {
+        retrievePageOfCharacters(0);
         drawListOfCharacters();
         attachClickToLetters();
-    } else {
-        console.log("You got a whole lotta nuthin'.");
-        console.log("Retrieving from the API");
-        for (let pageNumber=0; pageNumber<50; pageNumber++) {
-            let delay = pageNumber * 500;
-        
-            // We have to wrap retrievePageOfCharacters
-            // in an anonymous function
-            // so we can pass it an argument.
-            setTimeout(function () {
-                retrievePageOfCharacters(pageNumber);
-            }, delay);
-        
-            // If it did not take any arguments
-            // we would not need to wrap it.
-        }
-    }
+    }, 5000);
+    // }, 5000);
+    // }
+
 }    
 
 main();
